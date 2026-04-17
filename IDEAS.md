@@ -17,6 +17,8 @@
 | 6 | Watermark PDF | `/watermark` | Stamp custom text diagonally across every page | Client-side (pdf-lib) |
 | 7 | **⭐ PDF Editor Studio** | `/organize` | Reorder/rotate/delete pages + add page numbers & watermark in one tool | Client-side (pdf.js + pdf-lib) |
 | 8 | **PDF → Text Extractor** | `/extract-text` | Extract all readable text, copy to clipboard or download as .txt | Client-side (pdf.js) |
+| 9 | **PDF → PNG** | `/pdf-to-png` | Convert every PDF page to a lossless PNG image | Client-side (pdf.js) |
+| 10 | **🎨 PDF → Image** | `/pdf-to-image` | Convert pages to JPG, PNG, or WebP — format picker in one unified tool | Client-side (pdf.js) |
 
 > **Design Decision:** Small edits (page numbers, watermark) live inside the PDF Editor Studio sidebar — one upload, all edits, one download.
 
@@ -34,7 +36,8 @@
 ### 📄 Conversion Tools
 | Status | Tool | Description | Client-Side? | Notes |
 |--------|------|-------------|--------------|-------|
-| 🟡 | **PDF → PNG** | Export pages as high-quality transparent PNGs | ✅ Yes (pdf.js) | Quick win — canvas change |
+| ✅ | **PDF → PNG** | Merged into PDF → Image tool | ✅ Yes | Done — merged |
+| ✅ | **PDF → Image (JPG/PNG/WebP)** | Unified format picker, replaces separate JPG & PNG pages | ✅ Yes (pdf.js) | Done! |
 | 🟡 | **Word → PDF** | Convert .docx files to PDF | ❌ Needs LibreOffice | Defer |
 | 🟡 | **HTML → PDF** | Convert a webpage/URL to PDF | ❌ Needs Puppeteer | Defer |
 | 🟡 | **Excel → PDF** | Convert .xlsx files to PDF | ❌ Needs backend | Defer |

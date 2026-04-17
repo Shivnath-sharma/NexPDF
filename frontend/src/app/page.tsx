@@ -1,4 +1,4 @@
-import { FileText, Scissors, Archive, Image as ImageIcon, Zap, Lock, Sparkles, Droplet, Layers, FileSearch } from 'lucide-react';
+import { FileText, Scissors, Archive, Image as ImageIcon, Zap, Lock, Sparkles, Droplet, Layers, FileSearch, Images } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Home() {
@@ -60,10 +60,10 @@ export default function Home() {
       shadow: 'shadow-cyan-500/20'
     },
     {
-      name: 'PDF to JPG',
-      description: 'Extract images from your PDF or convert pages to JPG.',
-      icon: Sparkles,
-      href: '/pdf-to-jpg',
+      name: 'PDF to Image',
+      description: 'Convert PDF pages to JPG, PNG, or WebP — pick your format.',
+      icon: Images,
+      href: '/pdf-to-image',
       color: 'from-pink-500 to-rose-500',
       shadow: 'shadow-pink-500/20'
     },
