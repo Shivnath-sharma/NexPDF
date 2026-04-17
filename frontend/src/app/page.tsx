@@ -1,4 +1,4 @@
-import { FileText, Scissors, Archive, Image as ImageIcon, Zap, Lock, Sparkles, Droplet, Layers, FileSearch, Images } from 'lucide-react';
+import { FileText, Scissors, Archive, Image as ImageIcon, Zap, Lock, Sparkles, Droplet, Layers, FileSearch, Images, ShieldAlert } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Home() {
@@ -26,6 +26,14 @@ export default function Home() {
       href: '/organize',
       color: 'from-fuchsia-500 to-pink-600',
       shadow: 'shadow-fuchsia-500/20'
+    },
+    {
+      name: 'Redact PDF',
+      description: 'Black out sensitive information from your PDF securely in your browser.',
+      icon: ShieldAlert,
+      href: '/redact',
+      color: 'from-slate-700 to-slate-900',
+      shadow: 'shadow-slate-500/20'
     },
     {
       name: 'Compress PDF',

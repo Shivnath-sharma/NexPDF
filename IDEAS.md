@@ -5,7 +5,7 @@
 
 ---
 
-## ✅ Already Built (9 tools)
+## ✅ Already Built (11 tools)
 
 | # | Tool | Route | Description | How |
 |---|------|-------|-------------|-----|
@@ -19,6 +19,7 @@
 | 8 | **PDF → Text Extractor** | `/extract-text` | Extract all readable text, copy to clipboard or download as .txt | Client-side (pdf.js) |
 | 9 | **PDF → PNG** | `/pdf-to-png` | Convert every PDF page to a lossless PNG image | Client-side (pdf.js) |
 | 10 | **🎨 PDF → Image** | `/pdf-to-image` | Convert pages to JPG, PNG, or WebP — format picker in one unified tool | Client-side (pdf.js) |
+| 11 | **Redact PDF** | `/redact` | Black out sensitive info by drawing boxes | Client-side (pdf.js + pdf-lib) |
 
 > **Design Decision:** Small edits (page numbers, watermark) live inside the PDF Editor Studio sidebar — one upload, all edits, one download.
 
@@ -31,7 +32,7 @@
 |--------|------|-------------|--------------|-------|
 | 🟡 | **Protect PDF** | Add a password to lock a PDF | ❌ Needs `qpdf` on backend | Defer — needs backend setup |
 | 🟡 | **Unlock PDF** | Remove password from a PDF | ❌ Needs `qpdf` on backend | Defer — needs backend setup |
-| 🟡 | **Redact PDF** | Black-out/censor sensitive text on pages | ✅ Yes (pdf-lib + pdf.js) | Good next pick |
+| ✅ | **Redact PDF** | Black-out/censor sensitive text on pages | ✅ Yes (pdf-lib + pdf.js) | Done! |
 
 ### 📄 Conversion Tools
 | Status | Tool | Description | Client-Side? | Notes |
