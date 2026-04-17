@@ -281,8 +281,21 @@ export default function RedactPDF() {
               <div className="bg-muted/10 p-4 rounded-xl border border-border overflow-y-auto max-h-[70vh] flex flex-col items-center space-y-8 no-scrollbar scroll-smooth">
                 {pages.map((page, idx) => (
                   <div key={idx} className="relative shadow-2xl bg-white select-none">
-                    <div className="absolute -top-6 left-0 text-xs font-bold text-muted-foreground uppercase tracking-widest">
-                      Page {idx + 1}
+                    <div className="absolute -top-8 left-0 right-0 flex justify-between items-center px-1">
+                      <div className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
+                        Page {idx + 1}
+                      </div>
+                      <button 
+                        onClick={() => {
+                          const newPages = [...pages];
+                          newPages[idx].boxes = [];
+                          setPages(newPages);
+                          toast.info(`Cleared Page ${idx + 1}`);
+                        }}
+                        className="text-[10px] font-bold text-destructive hover:text-destructive/80 uppercase tracking-tighter transition-colors"
+                      >
+                        Clear Page
+                      </button>
                     </div>
                     <div 
                       className="relative cursor-crosshair overflow-hidden"
@@ -303,7 +316,7 @@ export default function RedactPDF() {
                       {page.boxes.map(box => (
                         <div
                           key={box.id}
-                          className="absolute bg-black group"
+                          className="absolute bg-black/90 group"
                           style={{
                             left: box.x,
                             top: box.y,
@@ -316,9 +329,9 @@ export default function RedactPDF() {
                               e.stopPropagation();
                               removeBox(idx, box.id);
                             }}
-                            className="absolute -top-2 -right-2 bg-destructive text-destructive-foreground p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
+                            className="absolute -top-3 -right-3 bg-destructive text-destructive-foreground p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity shadow-xl border-2 border-background"
                           >
-                            <Trash2 className="h-3 w-3" />
+                            <Trash2 className="h-4 w-4" />
                           </button>
                         </div>
                       ))}
