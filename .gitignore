@@ -1,0 +1,10 @@
+# Root-level directories that shouldn't be committed
+temp/
+uploads/
+
+# Root package-lock (not useful at monorepo root)
+package-lock.json
+
+# OS files
+.DS_Store
+Thumbs.db
