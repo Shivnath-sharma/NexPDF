@@ -32,7 +32,7 @@
 |--------|------|-------------|--------------|-------|
 | 🟡 | **Protect PDF** | Add a password to lock a PDF | ❌ Needs `qpdf` on backend | Defer — needs backend setup |
 | 🟡 | **Unlock PDF** | Remove password from a PDF | ❌ Needs `qpdf` on backend | Defer — needs backend setup |
-| ✅ | **Redact PDF** | Black-out/censor sensitive text on pages | ✅ Yes (pdf-lib + pdf.js) | Done! |
+| ✅ | **Redact PDF** | Black-out/censor sensitive text on pages | ✅ Yes (pdf-lib + pdf.js) | Done! (Paginated UI + Keyboard Nav) |
 
 ### 📄 Conversion Tools
 | Status | Tool | Description | Client-Side? | Notes |
