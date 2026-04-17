@@ -1,4 +1,4 @@
-import { FileText, Scissors, Archive, Image as ImageIcon, Zap, Lock, Sparkles, Droplet, Layers, FileSearch, Images, ShieldAlert } from 'lucide-react';
+import { FileText, Scissors, Archive, Image as ImageIcon, Zap, Lock, Sparkles, Droplet, Layers, FileSearch, Images, ShieldAlert, Info } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Home() {
@@ -74,6 +74,14 @@ export default function Home() {
       href: '/pdf-to-image',
       color: 'from-pink-500 to-rose-500',
       shadow: 'shadow-pink-500/20'
+    },
+    {
+      name: 'PDF Metadata',
+      description: 'View hidden properties, author details, and creation dates of any PDF.',
+      icon: Info,
+      href: '/metadata',
+      color: 'from-blue-600 to-indigo-800',
+      shadow: 'shadow-blue-700/20'
     },
   ];
 

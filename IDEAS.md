@@ -5,7 +5,7 @@
 
 ---
 
-## ✅ Already Built (11 tools)
+## ✅ Already Built (12 tools)
 
 | # | Tool | Route | Description | How |
 |---|------|-------|-------------|-----|
@@ -20,6 +20,7 @@
 | 9 | **PDF → PNG** | `/pdf-to-png` | Convert every PDF page to a lossless PNG image | Client-side (pdf.js) |
 | 10 | **🎨 PDF → Image** | `/pdf-to-image` | Convert pages to JPG, PNG, or WebP — format picker in one unified tool | Client-side (pdf.js) |
 | 11 | **Redact PDF** | `/redact` | Black out sensitive info by drawing boxes | Client-side (pdf.js + pdf-lib) |
+| 12 | **PDF Metadata** | `/metadata` | View hidden properties, author details, and creation dates | Client-side (pdf-lib) |
 
 > **Design Decision:** Small edits (page numbers, watermark) live inside the PDF Editor Studio sidebar — one upload, all edits, one download.
 
@@ -54,7 +55,7 @@
 ### 📊 Info & Analysis
 | Status | Tool | Description | Client-Side? | Notes |
 |--------|------|-------------|--------------|-------|
-| 🟡 | **PDF Metadata Viewer** | Show author, title, creation date, keywords | ✅ Yes (pdf-lib) | Nice quick build |
+| ✅ | **PDF Metadata Viewer** | Show author, title, creation date, keywords | ✅ Yes (pdf-lib) | Done! |
 | 🟡 | **Compare PDFs** | Diff two PDFs side-by-side | ✅ Partial (complex) | Complex — skip for now |
 
 ---
