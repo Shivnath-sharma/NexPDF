@@ -65,7 +65,7 @@
 | Status | Feature | Description | Priority |
 |--------|---------|-------------|----------|
 | 🟡 | **PWA Support** | Install NexPDF on desktop/phone, offline use | 🔥 High |
-| 🟡 | **Recent Tools** | Show last 3 used tools at top of homepage via localStorage | 🔥 High |
+| ✅ | **Recent Tools** | Show last 3 used tools at top of homepage via localStorage | 🔥 High |
 | 🟡 | **Batch Processing** | Process multiple files at once | 🟡 Medium |
 | 🟡 | **Drag-to-Reorder Tools** | Let users pin/reorder homepage tool cards | 🟡 Medium |
 | 🟡 | **Dark/Light Quick Toggle** | Floating pill theme switcher | 🟢 Low |
