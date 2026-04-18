@@ -5,7 +5,7 @@
 
 ---
 
-## ✅ Already Built (13 tools + UX features)
+## ✅ Already Built (14 tools + UX features)
 
 ### 🛠️ Core PDF Tools
 | # | Tool | Route | Description | How |
@@ -21,6 +21,7 @@
 | 9 | **Redact PDF** | `/redact` | Draw black boxes over sensitive info, paginated UI + keyboard nav | Client-side (pdf.js + pdf-lib) |
 | 10 | **PDF Metadata Viewer** | `/metadata` | View author, title, creation date, page count, file size | Client-side (pdf-lib) |
 | 11 | **Rotate PDF** | `/rotate` | Per-page or bulk rotation, CW & CCW, interactive thumbnail grid | Client-side (pdf-lib) |
+| 12 | **Remove / Extract Pages** | `/select-pages` | Remove or extract specific pages with a mode toggle | Client-side (pdf-lib) |
 
 > **Note:** `/pdf-to-jpg` and `/pdf-to-png` were legacy pages and have been consolidated into `/pdf-to-image`.
 
@@ -114,14 +115,13 @@
 
 ## 📝 Recommended Build Order (Next Steps)
 
-1. **Remove / Extract PDF Pages** — high demand, all client-side, small build
-2. **Digital Signature** — canvas drawing + pdf-lib embed, high value
-3. **Grayscale** in Studio Sidebar — render canvas with CSS filter, redraw
-4. **Image Watermark** in Studio Sidebar — embed image with pdf-lib
-5. **PDF Form Filler** — pdf-lib form fields, high business value
-6. **Search Bar** on Homepage — filter `TOOLS` array by name in real time
-7. **Tool Favourites** — `localStorage` list of pinned tool hrefs
-8. **PWA Support** — `manifest.json` + `service-worker.js`, do last once all tools are stable
+1. **Digital Signature** — canvas drawing + pdf-lib embed, high value
+2. **Grayscale** in Studio Sidebar — render canvas with CSS filter, redraw
+3. **Image Watermark** in Studio Sidebar — embed image with pdf-lib
+4. **PDF Form Filler** — pdf-lib form fields, high business value
+5. **Search Bar** on Homepage — filter `TOOLS` array by name in real time
+6. **Tool Favourites** — `localStorage` list of pinned tool hrefs
+7. **PWA Support** — `manifest.json` + `service-worker.js`, do last once all tools are stable
 
 ---
 

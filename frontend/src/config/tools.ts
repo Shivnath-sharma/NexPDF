@@ -1,6 +1,6 @@
 import { 
   FileText, Scissors, Archive, Image as ImageIcon,
-  Droplet, Layers, FileSearch, Images, ShieldAlert, Info, RotateCw
+  Droplet, Layers, FileSearch, Images, ShieldAlert, Info, RotateCw, CopyMinus
 } from 'lucide-react';
 
 export const TOOLS = [
@@ -11,6 +11,14 @@ export const TOOLS = [
     href: '/rotate',
     color: 'from-orange-500 to-red-500',
     shadow: 'shadow-orange-500/20'
+  },
+  {
+    name: 'Remove / Extract Pages',
+    description: 'Delete unwanted pages or pull out specific pages into a new PDF.',
+    icon: CopyMinus,
+    href: '/select-pages',
+    color: 'from-rose-500 to-red-600',
+    shadow: 'shadow-rose-500/20'
   },
   {
     name: 'Merge PDF',
