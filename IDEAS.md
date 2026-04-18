@@ -5,7 +5,7 @@
 
 ---
 
-## ✅ Already Built (12 tools + UX features)
+## ✅ Already Built (13 tools + UX features)
 
 ### 🛠️ Core PDF Tools
 | # | Tool | Route | Description | How |
@@ -20,6 +20,7 @@
 | 8 | **🎨 PDF → Image** | `/pdf-to-image` | Convert pages to JPG, PNG, or WebP — unified format picker | Client-side (pdf.js + canvas) |
 | 9 | **Redact PDF** | `/redact` | Draw black boxes over sensitive info, paginated UI + keyboard nav | Client-side (pdf.js + pdf-lib) |
 | 10 | **PDF Metadata Viewer** | `/metadata` | View author, title, creation date, page count, file size | Client-side (pdf-lib) |
+| 11 | **Rotate PDF** | `/rotate` | Per-page or bulk rotation, CW & CCW, interactive thumbnail grid | Client-side (pdf-lib) |
 
 > **Note:** `/pdf-to-jpg` and `/pdf-to-png` were legacy pages and have been consolidated into `/pdf-to-image`.
 
@@ -113,15 +114,14 @@
 
 ## 📝 Recommended Build Order (Next Steps)
 
-1. **Rotate PDF** — standalone page, trivially easy with `pdf-lib`, very SEO-friendly
-2. **Remove / Extract PDF Pages** — high demand, all client-side, small build
-3. **Digital Signature** — canvas drawing + pdf-lib embed, high value
-4. **Grayscale** in Studio Sidebar — render canvas with CSS filter, redraw
-5. **Image Watermark** in Studio Sidebar — embed image with pdf-lib
-6. **PDF Form Filler** — pdf-lib form fields, high business value
-7. **Search Bar** on Homepage — filter `TOOLS` array by name in real time
-8. **Tool Favourites** — `localStorage` list of pinned tool hrefs
-9. **PWA Support** — `manifest.json` + `service-worker.js`, do last once all tools are stable
+1. **Remove / Extract PDF Pages** — high demand, all client-side, small build
+2. **Digital Signature** — canvas drawing + pdf-lib embed, high value
+3. **Grayscale** in Studio Sidebar — render canvas with CSS filter, redraw
+4. **Image Watermark** in Studio Sidebar — embed image with pdf-lib
+5. **PDF Form Filler** — pdf-lib form fields, high business value
+6. **Search Bar** on Homepage — filter `TOOLS` array by name in real time
+7. **Tool Favourites** — `localStorage` list of pinned tool hrefs
+8. **PWA Support** — `manifest.json` + `service-worker.js`, do last once all tools are stable
 
 ---
 

@@ -1,9 +1,17 @@
 import { 
-  FileText, Scissors, Archive, Image as ImageIcon, Zap, Lock, 
-  Sparkles, Droplet, Layers, FileSearch, Images, ShieldAlert, Info 
+  FileText, Scissors, Archive, Image as ImageIcon,
+  Droplet, Layers, FileSearch, Images, ShieldAlert, Info, RotateCw
 } from 'lucide-react';
 
 export const TOOLS = [
+  {
+    name: 'Rotate PDF',
+    description: 'Rotate individual pages or the entire PDF clockwise or counter-clockwise.',
+    icon: RotateCw,
+    href: '/rotate',
+    color: 'from-orange-500 to-red-500',
+    shadow: 'shadow-orange-500/20'
+  },
   {
     name: 'Merge PDF',
     description: 'Combine multiple PDF files into one single document instantly.',
