@@ -1,9 +1,17 @@
 import { 
   FileText, Scissors, Archive, Image as ImageIcon,
-  Droplet, Layers, FileSearch, Images, ShieldAlert, Info, RotateCw, CopyMinus
+  Droplet, Layers, FileSearch, Images, ShieldAlert, Info, RotateCw, CopyMinus, PenTool
 } from 'lucide-react';
 
 export const TOOLS = [
+  {
+    name: 'Sign PDF',
+    description: 'Draw or type your digital signature and securely stamp it on your PDF.',
+    icon: PenTool,
+    href: '/sign',
+    color: 'from-blue-600 to-indigo-600',
+    shadow: 'shadow-blue-500/20'
+  },
   {
     name: 'Rotate PDF',
     description: 'Rotate individual pages or the entire PDF clockwise or counter-clockwise.',

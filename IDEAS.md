@@ -5,7 +5,7 @@
 
 ---
 
-## ✅ Already Built (14 tools + UX features)
+## ✅ Already Built (15 tools + UX features)
 
 ### 🛠️ Core PDF Tools
 | # | Tool | Route | Description | How |
@@ -22,6 +22,7 @@
 | 10 | **PDF Metadata Viewer** | `/metadata` | View author, title, creation date, page count, file size | Client-side (pdf-lib) |
 | 11 | **Rotate PDF** | `/rotate` | Per-page or bulk rotation, CW & CCW, interactive thumbnail grid | Client-side (pdf-lib) |
 | 12 | **Remove / Extract Pages** | `/select-pages` | Remove or extract specific pages with a mode toggle | Client-side (pdf-lib) |
+| 13 | **Sign PDF** | `/sign` | Draw a digital signature and place it anywhere on a page | Client-side (pdf-lib) |
 
 > **Note:** `/pdf-to-jpg` and `/pdf-to-png` were legacy pages and have been consolidated into `/pdf-to-image`.
 
@@ -42,7 +43,6 @@
 |--------|------|-------------|--------------|-------|
 | 🟡 | **Protect PDF** | Add a password to lock a PDF | ❌ Needs `qpdf` on backend | Defer — needs backend setup |
 | 🟡 | **Unlock PDF** | Remove password from a PDF | ❌ Needs `qpdf` on backend | Defer — needs backend setup |
-| 🟡 | **Digital Signature** | Draw or type a signature and embed it into a PDF page | ✅ Yes (pdf-lib + canvas) | Good next pick |
 | 🟡 | **Flatten PDF** | Flatten form fields so they cannot be edited | ✅ Yes (pdf-lib) | Useful for legal/forms |
 
 ### 📄 Conversion Tools
@@ -115,8 +115,7 @@
 
 ## 📝 Recommended Build Order (Next Steps)
 
-1. **Digital Signature** — canvas drawing + pdf-lib embed, high value
-2. **Grayscale** in Studio Sidebar — render canvas with CSS filter, redraw
+1. **Grayscale** in Studio Sidebar — render canvas with CSS filter, redraw
 3. **Image Watermark** in Studio Sidebar — embed image with pdf-lib
 4. **PDF Form Filler** — pdf-lib form fields, high business value
 5. **Search Bar** on Homepage — filter `TOOLS` array by name in real time
