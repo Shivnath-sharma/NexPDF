@@ -7,12 +7,14 @@
 > - Key implementation notes
 > - Gotchas to watch out for
 
+> **Priority Order:** Rotate PDF → Remove/Extract Pages → Digital Signature → Grayscale → Image Watermark → Form Filler → Search Bar → Tool Favourites → PWA (last, once everything is stable)
+
 ---
 
-## ✅ Priority 1 — PWA Support (Make App Installable)
+## 🔄 Priority 1 — Rotate PDF (Standalone Tool)
 
 ### What it is
-Lets users install NexPDF on their phone or desktop like a native app. Works offline for the UI (tools still need the browser to run).
+Users upload a PDF, choose which pages to rotate (or rotate all), and download the result.
 
 ### How to build it
 

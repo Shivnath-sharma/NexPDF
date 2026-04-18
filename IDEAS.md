@@ -113,15 +113,15 @@
 
 ## 📝 Recommended Build Order (Next Steps)
 
-1. **PWA Support** — `manifest.json` + `service-worker.js` makes the whole app installable offline
-2. **Rotate PDF** — standalone page, trivially easy with `pdf-lib`, very SEO-friendly
-3. **Remove / Extract PDF Pages** — high demand, all client-side, small build
-4. **Digital Signature** — canvas drawing + pdf-lib embed, high value
-5. **Grayscale** in Studio Sidebar — render canvas with CSS filter, redraw
-6. **Image Watermark** in Studio Sidebar — embed image with pdf-lib
-7. **PDF Form Filler** — pdf-lib form fields, high business value
-8. **Search Bar** on Homepage — filter `TOOLS` array by name in real time
-9. **Tool Favourites** — `localStorage` list of pinned tool hrefs
+1. **Rotate PDF** — standalone page, trivially easy with `pdf-lib`, very SEO-friendly
+2. **Remove / Extract PDF Pages** — high demand, all client-side, small build
+3. **Digital Signature** — canvas drawing + pdf-lib embed, high value
+4. **Grayscale** in Studio Sidebar — render canvas with CSS filter, redraw
+5. **Image Watermark** in Studio Sidebar — embed image with pdf-lib
+6. **PDF Form Filler** — pdf-lib form fields, high business value
+7. **Search Bar** on Homepage — filter `TOOLS` array by name in real time
+8. **Tool Favourites** — `localStorage` list of pinned tool hrefs
+9. **PWA Support** — `manifest.json` + `service-worker.js`, do last once all tools are stable
 
 ---
 
