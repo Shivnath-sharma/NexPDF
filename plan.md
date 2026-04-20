@@ -7,38 +7,11 @@
 > - Key implementation notes
 > - Gotchas to watch out for
 
-> **Priority Order:** Tool Favourites → PWA (last, once everything is stable)
+> **Priority Order:** PWA Support (last, once everything is stable)
 
 ---
 
-## ⭐ Priority 1 — Tool Favourites
-
-### What it is
-A star button on each tool card. Starred tools appear in a "My Favourites" section above the main grid.
-
-### How to build it
-
-**Files:**
-- `frontend/src/components/FavouritesList.tsx` (same pattern as `RecentToolsList`)
-- Add star button to `ToolCard` component
-
-**`localStorage` key:** `nexpdf_favourites` — store array of `href` strings.
-
-```ts
-const toggleFavourite = (href: string) => {
-  const stored = JSON.parse(localStorage.getItem('nexpdf_favourites') || '[]');
-  const updated = stored.includes(href)
-    ? stored.filter((h: string) => h !== href)  // remove
-    : [...stored, href];                          // add
-  localStorage.setItem('nexpdf_favourites', JSON.stringify(updated));
-};
-```
-
-> **Note:** Use `e.preventDefault()` and `e.stopPropagation()` on the star button click to prevent the Link from navigating.
-
----
-
-## ✅ Priority 3 — PWA Support (Make App Installable)
+## ✅ Priority 1 — PWA Support (Make App Installable)
 
 ### What it is
 Lets users install NexPDF on their phone or desktop like a native app. Works offline for the UI (tools still need the browser to run).

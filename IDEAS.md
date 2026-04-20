@@ -76,11 +76,11 @@
 | Status | Tool | Description | Client-Side? | Notes |
 |--------|------|-------------|--------------|-------|
 | ✅ | **PDF Form Filler** | Fill AcroForm fields directly in-browser | ✅ Yes (pdf-lib) | Done! |
-| 🟡 | **Rotate PDF** | Rotate all or individual pages and download | ✅ Yes (pdf-lib) | Tiny tool, very searchable |
-| 🟡 | **Number PDF Pages** | Add page numbers with custom position & style | ✅ Yes (pdf-lib) | Already in Studio — could expose as standalone too |
+| ✅ | **Rotate PDF** | Rotate all or individual pages and download | ✅ Yes (pdf-lib) | Done! |
+| ✅ | **Number PDF Pages** | Add page numbers with custom position & style | ✅ Yes (pdf-lib) | Built into Studio |
 | 🟡 | **PDF Annotator** | Highlight text, add sticky notes, draw arrows | ✅ Yes (pdf.js + canvas overlay) | Complex but very premium feature |
-| 🟡 | **Remove PDF Pages** | Upload PDF, pick pages to delete, download | ✅ Yes (pdf-lib) | Simple and high-demand |
-| 🟡 | **Extract PDF Pages** | Pull specific page ranges out of a PDF | ✅ Yes (pdf-lib) | Variant of Split, but range-based |
+| ✅ | **Remove PDF Pages** | Upload PDF, pick pages to delete, download | ✅ Yes (pdf-lib) | Done! (combined with Extract) |
+| ✅ | **Extract PDF Pages** | Pull specific page ranges out of a PDF | ✅ Yes (pdf-lib) | Done! (combined with Remove) |
 
 ---
 
@@ -92,7 +92,7 @@
 | ✅ | **Recent Tools** | Last 3 used tools on homepage, removable | 🔥 High |
 | 🟡 | **Batch Processing** | Process multiple files at once | 🟡 Medium |
 | 🟡 | **Drag-to-Reorder Tools** | Let users pin/reorder homepage tool cards | 🟡 Medium |
-| 🟡 | **Tool Favourites** | Star/pin tools to the top of the homepage | 🟡 Medium |
+| ✅ | **Tool Favourites** | Star/pin tools to the top of the homepage | ✅ Yes (`localStorage`) |
 | 🟡 | **Processing History** | Show list of files processed in the session | 🟢 Low |
 | 🟡 | **Keyboard Shortcuts** | Global shortcut panel (e.g. `M` for Merge) | 🟢 Low |
 | 🟡 | **Share Link** | Generate a shareable link to a specific tool | 🟢 Low |
@@ -114,8 +114,7 @@
 
 ## 📝 Recommended Build Order (Next Steps)
 
-1. **Tool Favourites** — `localStorage` list of pinned tool hrefs
-2. **PWA Support** — `manifest.json` + `service-worker.js`, do last once all tools are stable
+1. **PWA Support** — `manifest.json` + `service-worker.js`, do last once all tools are stable
 
 ---
 
