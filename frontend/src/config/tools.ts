@@ -1,6 +1,6 @@
 import { 
   FileText, Scissors, Archive, Image as ImageIcon,
-  Droplet, Layers, FileSearch, Images, ShieldAlert, Info, RotateCw, CopyMinus, PenTool
+  Droplet, Layers, FileSearch, Images, ShieldAlert, Info, RotateCw, CopyMinus, PenTool, ClipboardList
 } from 'lucide-react';
 
 export const TOOLS = [
@@ -11,6 +11,14 @@ export const TOOLS = [
     href: '/sign',
     color: 'from-blue-600 to-indigo-600',
     shadow: 'shadow-blue-500/20'
+  },
+  {
+    name: 'PDF Form Filler',
+    description: 'Fill in interactive PDF forms (AcroForms) directly in your browser and download.',
+    icon: ClipboardList,
+    href: '/form-filler',
+    color: 'from-teal-500 to-emerald-600',
+    shadow: 'shadow-teal-500/20'
   },
   {
     name: 'Rotate PDF',

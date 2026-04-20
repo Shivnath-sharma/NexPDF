@@ -7,48 +7,11 @@
 > - Key implementation notes
 > - Gotchas to watch out for
 
-> **Priority Order:** Form Filler → Tool Favourites → PWA (last, once everything is stable)
+> **Priority Order:** Tool Favourites → PWA (last, once everything is stable)
 
 ---
 
-## 📋 Priority 1 — PDF Form Filler
-
-### What it is
-Users upload a PDF with interactive form fields (AcroForms), fill them in the browser, and download.
-
-### How to build it
-
-**Route:** `/form-filler` | **File:** `frontend/src/app/form-filler/page.tsx`
-
-**Core logic:**
-```ts
-const form = pdfDoc.getForm();
-const fields = form.getFields();
-
-// Dynamically detect field type and name
-fields.forEach(field => {
-  const name = field.getName();
-  const type = field.constructor.name; // PDFTextField, PDFCheckBox, etc.
-});
-
-// Fill a text field
-form.getTextField('full_name').setText('John Doe');
-
-// Check a checkbox
-form.getCheckBox('agree_terms').check();
-```
-
-**UI:** After PDF load, scan fields and dynamically render a form in React matching the detected field types. On submit, write values back with pdf-lib and download.
-
-> **Note:** Not all PDFs have AcroForms. Check `form.getFields().length === 0` and show a friendly message if no fields found.
-
-> **Note:** Some PDFs are "locked" against editing. Wrap the entire operation in `try/catch`.
-
-
-
----
-
-## ⭐ Priority 2 — Tool Favourites
+## ⭐ Priority 1 — Tool Favourites
 
 ### What it is
 A star button on each tool card. Starred tools appear in a "My Favourites" section above the main grid.
