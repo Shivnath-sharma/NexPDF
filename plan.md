@@ -7,37 +7,11 @@
 > - Key implementation notes
 > - Gotchas to watch out for
 
-> **Priority Order:** Grayscale → Image Watermark → Form Filler → Search Bar → Tool Favourites → PWA (last, once everything is stable)
+> **Priority Order:** Image Watermark → Form Filler → Search Bar → Tool Favourites → PWA (last, once everything is stable)
 
 ---
 
-## 🎨 Priority 1 — Studio Sidebar: Grayscale
-
-### What it is
-A toggle in PDF Editor Studio that converts all pages to grayscale in the exported PDF.
-
-### How to build it
-
-**File:** `frontend/src/app/organize/page.tsx` — add toggle to the options sidebar.
-
-**Strategy:** Render each page to canvas via pdf.js, desaturate pixel data manually, then embed the grayscale canvas as a PNG in the output PDF.
-
-**Canvas desaturation:**
-```ts
-const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-const data = imageData.data;
-for (let i = 0; i < data.length; i += 4) {
-  const avg = (data[i] + data[i+1] + data[i+2]) / 3;
-  data[i] = data[i+1] = data[i+2] = avg;
-}
-ctx.putImageData(imageData, 0, 0);
-```
-
-> **⚠️ Trade-off:** This converts pages to rasterized images, which increases file size and removes the text layer (copy-paste won't work). Mention this to users in the UI.
-
----
-
-## 🖼️ Priority 2 — Studio Sidebar: Image Watermark
+## 🖼️ Priority 1 — Studio Sidebar: Image Watermark
 
 ### What it is
 Instead of text, let users stamp a PNG logo over every page.
@@ -67,7 +41,7 @@ pdfDoc.getPages().forEach(page => {
 
 ---
 
-## 📋 Priority 3 — PDF Form Filler
+## 📋 Priority 2 — PDF Form Filler
 
 ### What it is
 Users upload a PDF with interactive form fields (AcroForms), fill them in the browser, and download.
@@ -102,7 +76,7 @@ form.getCheckBox('agree_terms').check();
 
 ---
 
-## 🔍 Priority 4 — Search Bar on Homepage
+## 🔍 Priority 3 — Search Bar on Homepage
 
 ### What it is
 Real-time search that filters the tools grid as you type.
@@ -142,7 +116,7 @@ export function ToolsGrid() {
 
 ---
 
-## ⭐ Priority 5 — Tool Favourites
+## ⭐ Priority 4 — Tool Favourites
 
 ### What it is
 A star button on each tool card. Starred tools appear in a "My Favourites" section above the main grid.
@@ -169,7 +143,7 @@ const toggleFavourite = (href: string) => {
 
 ---
 
-## ✅ Priority 6 — PWA Support (Make App Installable)
+## ✅ Priority 5 — PWA Support (Make App Installable)
 
 ### What it is
 Lets users install NexPDF on their phone or desktop like a native app. Works offline for the UI (tools still need the browser to run).

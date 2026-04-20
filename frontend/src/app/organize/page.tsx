@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Upload, FileText, CheckCircle, XCircle, Loader, ArrowLeft, Layers, RotateCw, Trash2, GripHorizontal, ZoomIn, X, Hash, Droplet, Settings2 } from 'lucide-react';
+import { Upload, FileText, CheckCircle, XCircle, Loader, ArrowLeft, Layers, RotateCw, Trash2, GripHorizontal, ZoomIn, X, Hash, Droplet, Settings2, Palette } from 'lucide-react';
 import Link from 'next/link';
 import { PDFDocument, degrees, rgb, StandardFonts } from 'pdf-lib';
 import { toast } from 'sonner';
@@ -21,6 +21,7 @@ interface StudioOptions {
   pageNumberStart: number;
   addWatermark: boolean;
   watermarkText: string;
+  grayscale: boolean;
 }
 
 export default function OrganizePDF() {
@@ -39,6 +40,7 @@ export default function OrganizePDF() {
     pageNumberStart: 1,
     addWatermark: false,
     watermarkText: 'CONFIDENTIAL',
+    grayscale: false,
   });
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
@@ -145,17 +147,69 @@ export default function OrganizePDF() {
       const sourcePdf = await PDFDocument.load(originalBytes);
       const newPdf = await PDFDocument.create();
 
-      const indicesToCopy = activePages.map(p => p.originalIndex - 1);
-      const copiedPages = await newPdf.copyPages(sourcePdf, indicesToCopy);
+      if (options.grayscale) {
+        toast.info('Applying grayscale (this may take a moment)...');
+        // @ts-ignore
+        const pdfjsLib = await import('pdfjs-dist');
+        pdfjsLib.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.mjs`;
 
-      activePages.forEach((pageData, index) => {
-        const copiedPage = copiedPages[index];
-        if (pageData.rotation !== 0) {
-          const currentRotation = copiedPage.getRotation().angle;
-          copiedPage.setRotation(degrees(currentRotation + pageData.rotation));
+        const pdf = await pdfjsLib.getDocument(originalBytes).promise;
+        
+        for (const pageData of activePages) {
+          const pdfPage = await pdf.getPage(pageData.originalIndex);
+          const viewport = pdfPage.getViewport({ scale: 2.0 }); // 2.0 scale for high quality
+          
+          const canvas = document.createElement('canvas');
+          canvas.width = viewport.width;
+          canvas.height = viewport.height;
+          const ctx = canvas.getContext('2d');
+          if (!ctx) throw new Error('Could not create canvas context');
+
+          await pdfPage.render({ canvasContext: ctx, viewport } as any).promise;
+
+          // Desaturate
+          const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          const data = imageData.data;
+          for (let i = 0; i < data.length; i += 4) {
+            const avg = (data[i] + data[i+1] + data[i+2]) / 3;
+            data[i] = data[i+1] = data[i+2] = avg;
+          }
+          ctx.putImageData(imageData, 0, 0);
+
+          const pngDataUrl = canvas.toDataURL('image/png');
+          const pngBytes = await fetch(pngDataUrl).then(r => r.arrayBuffer());
+          const pngImage = await newPdf.embedPng(pngBytes);
+
+          // We use the original page dimensions from pdf-lib so watermarks/page numbers align perfectly
+          const sourcePage = sourcePdf.getPage(pageData.originalIndex - 1);
+          const { width, height } = sourcePage.getSize();
+          
+          const newPage = newPdf.addPage([width, height]);
+          newPage.drawImage(pngImage, {
+            x: 0,
+            y: 0,
+            width,
+            height,
+          });
+
+          if (pageData.rotation !== 0) {
+            const currentRotation = sourcePage.getRotation().angle;
+            newPage.setRotation(degrees(currentRotation + pageData.rotation));
+          }
         }
-        newPdf.addPage(copiedPage);
-      });
+      } else {
+        const indicesToCopy = activePages.map(p => p.originalIndex - 1);
+        const copiedPages = await newPdf.copyPages(sourcePdf, indicesToCopy);
+
+        activePages.forEach((pageData, index) => {
+          const copiedPage = copiedPages[index];
+          if (pageData.rotation !== 0) {
+            const currentRotation = copiedPage.getRotation().angle;
+            copiedPage.setRotation(degrees(currentRotation + pageData.rotation));
+          }
+          newPdf.addPage(copiedPage);
+        });
+      }
 
       // --- Add Page Numbers ---
       if (options.addPageNumbers) {
@@ -433,7 +487,7 @@ export default function OrganizePDF() {
                 </div>
 
                 {/* Watermark Toggle */}
-                <div className="space-y-3">
+                <div className="space-y-3 pb-4 border-b border-border">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Droplet className="h-4 w-4 text-indigo-500" />
@@ -457,6 +511,27 @@ export default function OrganizePDF() {
                         className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
                       />
                     </div>
+                  )}
+                </div>
+
+                {/* Grayscale Toggle */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Palette className="h-4 w-4 text-slate-500" />
+                      <span className="text-sm font-semibold">Convert to Grayscale</span>
+                    </div>
+                    <button
+                      onClick={() => setOptions(o => ({ ...o, grayscale: !o.grayscale }))}
+                      className={`relative w-10 h-5 rounded-full transition-colors ${options.grayscale ? 'bg-primary' : 'bg-muted'}`}
+                    >
+                      <span className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform ${options.grayscale ? 'translate-x-5' : 'translate-x-0'}`} />
+                    </button>
+                  </div>
+                  {options.grayscale && (
+                    <p className="text-xs text-muted-foreground bg-muted/50 p-2 rounded-md border border-border">
+                      ⚠️ Converts pages to images to apply filter. Text will no longer be selectable and file size may increase.
+                    </p>
                   )}
                 </div>
               </div>

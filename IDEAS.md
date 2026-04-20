@@ -59,7 +59,7 @@
 | Status | Feature | Description | Notes |
 |--------|---------|-------------|-------|
 | 🟡 | **Image Watermark** | Stamp a logo/PNG over every page | Upload image → embed with pdf-lib |
-| 🟡 | **Grayscale** | Convert all pages to black & white | Render each page to canvas, desaturate via CSS filter, redraw |
+| ✅ | **Grayscale** | Convert all pages to black & white | ✅ Yes (Canvas filter) | Done! |
 | 🟡 | **Crop Margins** | Trim page edges (resize mediabox) | Modify page crop/media box via pdf-lib |
 | 🟡 | **Add Blank Pages** | Insert empty pages at any position | One-liner with `pdfDoc.addPage()` in pdf-lib |
 | 🟡 | **Headers & Footers** | Add custom text header/footer to every page | pdf-lib `drawText` at fixed y-positions |
@@ -115,12 +115,11 @@
 
 ## 📝 Recommended Build Order (Next Steps)
 
-1. **Grayscale** in Studio Sidebar — render canvas with CSS filter, redraw
-3. **Image Watermark** in Studio Sidebar — embed image with pdf-lib
-4. **PDF Form Filler** — pdf-lib form fields, high business value
-5. **Search Bar** on Homepage — filter `TOOLS` array by name in real time
-6. **Tool Favourites** — `localStorage` list of pinned tool hrefs
-7. **PWA Support** — `manifest.json` + `service-worker.js`, do last once all tools are stable
+1. **Image Watermark** in Studio Sidebar — embed image with pdf-lib
+2. **PDF Form Filler** — pdf-lib form fields, high business value
+3. **Search Bar** on Homepage — filter `TOOLS` array by name in real time
+4. **Tool Favourites** — `localStorage` list of pinned tool hrefs
+5. **PWA Support** — `manifest.json` + `service-worker.js`, do last once all tools are stable
 
 ---
 
