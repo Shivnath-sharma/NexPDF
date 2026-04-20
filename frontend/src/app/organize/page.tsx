@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Upload, FileText, CheckCircle, XCircle, Loader, ArrowLeft, Layers, RotateCw, Trash2, GripHorizontal, ZoomIn, X, Hash, Droplet, Settings2, Palette } from 'lucide-react';
+import { Upload, FileText, CheckCircle, XCircle, Loader, ArrowLeft, Layers, RotateCw, Trash2, GripHorizontal, ZoomIn, X, Hash, Droplet, Settings2, Palette, Image as ImageIcon } from 'lucide-react';
 import Link from 'next/link';
 import { PDFDocument, degrees, rgb, StandardFonts } from 'pdf-lib';
 import { toast } from 'sonner';
@@ -21,6 +21,10 @@ interface StudioOptions {
   pageNumberStart: number;
   addWatermark: boolean;
   watermarkText: string;
+  watermarkType: 'text' | 'image';
+  watermarkImage: File | null;
+  watermarkOpacity: number;
+  watermarkScale: number;
   grayscale: boolean;
 }
 
@@ -40,6 +44,10 @@ export default function OrganizePDF() {
     pageNumberStart: 1,
     addWatermark: false,
     watermarkText: 'CONFIDENTIAL',
+    watermarkType: 'text',
+    watermarkImage: null,
+    watermarkOpacity: 0.25,
+    watermarkScale: 1,
     grayscale: false,
   });
 
@@ -235,34 +243,56 @@ export default function OrganizePDF() {
       }
 
       // --- Add Watermark ---
-      if (options.addWatermark && options.watermarkText.trim()) {
-        const font = await newPdf.embedFont(StandardFonts.HelveticaBold);
+      if (options.addWatermark) {
         const finalPages = newPdf.getPages();
 
-        finalPages.forEach(page => {
-          const { width, height } = page.getSize();
-          const diagonal = Math.sqrt(width * width + height * height);
-          const widthAtSize1 = font.widthOfTextAtSize(options.watermarkText, 1);
-          const fontSize = (diagonal * 0.85) / widthAtSize1;
-          const textWidth = font.widthOfTextAtSize(options.watermarkText, fontSize);
-          const textHeight = font.heightAtSize(fontSize);
-          const angleInRadians = Math.atan2(height, width);
-          const angleInDegrees = angleInRadians * (180 / Math.PI);
-          const centerX = width / 2;
-          const centerY = height / 2;
-          const offsetX = (textWidth / 2) * Math.cos(angleInRadians) - (textHeight / 2) * Math.sin(angleInRadians);
-          const offsetY = (textWidth / 2) * Math.sin(angleInRadians) + (textHeight / 2) * Math.cos(angleInRadians);
+        if (options.watermarkType === 'text' && options.watermarkText.trim()) {
+          const font = await newPdf.embedFont(StandardFonts.HelveticaBold);
+          finalPages.forEach(page => {
+            const { width, height } = page.getSize();
+            const diagonal = Math.sqrt(width * width + height * height);
+            const widthAtSize1 = font.widthOfTextAtSize(options.watermarkText, 1);
+            const fontSize = (diagonal * 0.85) / widthAtSize1;
+            const textWidth = font.widthOfTextAtSize(options.watermarkText, fontSize);
+            const textHeight = font.heightAtSize(fontSize);
+            const angleInRadians = Math.atan2(height, width);
+            const angleInDegrees = angleInRadians * (180 / Math.PI);
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const offsetX = (textWidth / 2) * Math.cos(angleInRadians) - (textHeight / 2) * Math.sin(angleInRadians);
+            const offsetY = (textWidth / 2) * Math.sin(angleInRadians) + (textHeight / 2) * Math.cos(angleInRadians);
 
-          page.drawText(options.watermarkText, {
-            x: centerX - offsetX,
-            y: centerY - offsetY,
-            size: fontSize,
-            font,
-            color: rgb(0.5, 0.5, 0.5),
-            opacity: 0.25,
-            rotate: degrees(angleInDegrees),
+            page.drawText(options.watermarkText, {
+              x: centerX - offsetX,
+              y: centerY - offsetY,
+              size: fontSize,
+              font,
+              color: rgb(0.5, 0.5, 0.5),
+              opacity: options.watermarkOpacity,
+              rotate: degrees(angleInDegrees),
+            });
           });
-        });
+        } else if (options.watermarkType === 'image' && options.watermarkImage) {
+          const imageBytes = await options.watermarkImage.arrayBuffer();
+          const isPng = options.watermarkImage.type === 'image/png';
+          const watermarkImage = isPng 
+            ? await newPdf.embedPng(imageBytes)
+            : await newPdf.embedJpg(imageBytes);
+          
+          finalPages.forEach(page => {
+            const { width, height } = page.getSize();
+            const imgDims = watermarkImage.scale(options.watermarkScale);
+            
+            // Center the image
+            page.drawImage(watermarkImage, {
+              x: width / 2 - imgDims.width / 2,
+              y: height / 2 - imgDims.height / 2,
+              width: imgDims.width,
+              height: imgDims.height,
+              opacity: options.watermarkOpacity,
+            });
+          });
+        }
       }
 
       const pdfBytes = await newPdf.save();
@@ -501,15 +531,76 @@ export default function OrganizePDF() {
                     </button>
                   </div>
                   {options.addWatermark && (
-                    <div className="pl-1">
-                      <input
-                        type="text"
-                        value={options.watermarkText}
-                        onChange={(e) => setOptions(o => ({ ...o, watermarkText: e.target.value }))}
-                        placeholder="e.g. CONFIDENTIAL"
-                        maxLength={40}
-                        className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-                      />
+                    <div className="space-y-3 pl-1">
+                      {/* Type Switcher */}
+                      <div className="flex bg-muted rounded-lg p-1 gap-1">
+                        <button
+                          onClick={() => setOptions(o => ({ ...o, watermarkType: 'text' }))}
+                          className={`flex-1 py-1 text-xs font-medium rounded-md transition-all ${options.watermarkType === 'text' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+                        >
+                          Text
+                        </button>
+                        <button
+                          onClick={() => setOptions(o => ({ ...o, watermarkType: 'image' }))}
+                          className={`flex-1 py-1 text-xs font-medium rounded-md transition-all ${options.watermarkType === 'image' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground'}`}
+                        >
+                          Image
+                        </button>
+                      </div>
+
+                      {options.watermarkType === 'text' ? (
+                        <input
+                          type="text"
+                          value={options.watermarkText}
+                          onChange={(e) => setOptions(o => ({ ...o, watermarkText: e.target.value }))}
+                          placeholder="e.g. CONFIDENTIAL"
+                          maxLength={40}
+                          className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                        />
+                      ) : (
+                        <div className="space-y-2">
+                          <label className="flex flex-col items-center justify-center w-full h-20 border-2 border-dashed border-border rounded-lg cursor-pointer hover:bg-muted/50 transition-colors">
+                            <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                              <ImageIcon className="w-5 h-5 text-muted-foreground mb-1" />
+                              <p className="text-[10px] text-muted-foreground">
+                                {options.watermarkImage ? options.watermarkImage.name : 'Click to upload logo'}
+                              </p>
+                            </div>
+                            <input 
+                              type="file" 
+                              className="hidden" 
+                              accept="image/png,image/jpeg"
+                              onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                if (file) setOptions(o => ({ ...o, watermarkImage: file }));
+                              }}
+                            />
+                          </label>
+                          {options.watermarkImage && (
+                            <div className="flex flex-col gap-1">
+                              <label className="text-[10px] text-muted-foreground">Scale: {options.watermarkScale.toFixed(1)}x</label>
+                              <input 
+                                type="range" 
+                                min="0.1" max="2" step="0.1"
+                                value={options.watermarkScale}
+                                onChange={(e) => setOptions(o => ({ ...o, watermarkScale: parseFloat(e.target.value) }))}
+                                className="w-full h-1 bg-muted rounded-lg appearance-none cursor-pointer accent-primary"
+                              />
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                      <div className="flex flex-col gap-1">
+                        <label className="text-[10px] text-muted-foreground">Opacity: {(options.watermarkOpacity * 100).toFixed(0)}%</label>
+                        <input 
+                          type="range" 
+                          min="0.05" max="1" step="0.05"
+                          value={options.watermarkOpacity}
+                          onChange={(e) => setOptions(o => ({ ...o, watermarkOpacity: parseFloat(e.target.value) }))}
+                          className="w-full h-1 bg-muted rounded-lg appearance-none cursor-pointer accent-primary"
+                        />
+                      </div>
                     </div>
                   )}
                 </div>

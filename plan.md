@@ -7,41 +7,11 @@
 > - Key implementation notes
 > - Gotchas to watch out for
 
-> **Priority Order:** Image Watermark → Form Filler → Search Bar → Tool Favourites → PWA (last, once everything is stable)
+> **Priority Order:** Form Filler → Search Bar → Tool Favourites → PWA (last, once everything is stable)
 
 ---
 
-## 🖼️ Priority 1 — Studio Sidebar: Image Watermark
-
-### What it is
-Instead of text, let users stamp a PNG logo over every page.
-
-### How to build it
-
-**File:** `frontend/src/app/organize/page.tsx` — extend the existing "Add Watermark" toggle with a mode picker (Text vs. Image).
-
-**Core logic:**
-```ts
-const logoBytes = await logoFile.arrayBuffer();
-const logoImage = await pdfDoc.embedPng(logoBytes); // also embedJpg for JPEGs
-
-pdfDoc.getPages().forEach(page => {
-  const { width, height } = page.getSize();
-  page.drawImage(logoImage, {
-    x: width - 120 - 20,
-    y: 20,
-    width: 120,
-    height: 60,
-    opacity: 0.4,
-  });
-});
-```
-
-> **Note:** Always use PNG for logos that need transparency. JPEG doesn't support transparency.
-
----
-
-## 📋 Priority 2 — PDF Form Filler
+## 📋 Priority 1 — PDF Form Filler
 
 ### What it is
 Users upload a PDF with interactive form fields (AcroForms), fill them in the browser, and download.
@@ -76,7 +46,7 @@ form.getCheckBox('agree_terms').check();
 
 ---
 
-## 🔍 Priority 3 — Search Bar on Homepage
+## 🔍 Priority 2 — Search Bar on Homepage
 
 ### What it is
 Real-time search that filters the tools grid as you type.
@@ -116,7 +86,7 @@ export function ToolsGrid() {
 
 ---
 
-## ⭐ Priority 4 — Tool Favourites
+## ⭐ Priority 3 — Tool Favourites
 
 ### What it is
 A star button on each tool card. Starred tools appear in a "My Favourites" section above the main grid.
@@ -143,7 +113,7 @@ const toggleFavourite = (href: string) => {
 
 ---
 
-## ✅ Priority 5 — PWA Support (Make App Installable)
+## ✅ Priority 4 — PWA Support (Make App Installable)
 
 ### What it is
 Lets users install NexPDF on their phone or desktop like a native app. Works offline for the UI (tools still need the browser to run).

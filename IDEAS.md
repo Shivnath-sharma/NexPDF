@@ -58,7 +58,7 @@
 ### ✏️ Studio Sidebar Additions *(add as toggles in PDF Editor Studio, not new pages)*
 | Status | Feature | Description | Notes |
 |--------|---------|-------------|-------|
-| 🟡 | **Image Watermark** | Stamp a logo/PNG over every page | Upload image → embed with pdf-lib |
+| ✅ | **Image Watermark** | Stamp a logo/PNG over every page | ✅ Yes (pdf-lib) | Done! |
 | ✅ | **Grayscale** | Convert all pages to black & white | ✅ Yes (Canvas filter) | Done! |
 | 🟡 | **Crop Margins** | Trim page edges (resize mediabox) | Modify page crop/media box via pdf-lib |
 | 🟡 | **Add Blank Pages** | Insert empty pages at any position | One-liner with `pdfDoc.addPage()` in pdf-lib |
@@ -115,11 +115,10 @@
 
 ## 📝 Recommended Build Order (Next Steps)
 
-1. **Image Watermark** in Studio Sidebar — embed image with pdf-lib
-2. **PDF Form Filler** — pdf-lib form fields, high business value
-3. **Search Bar** on Homepage — filter `TOOLS` array by name in real time
-4. **Tool Favourites** — `localStorage` list of pinned tool hrefs
-5. **PWA Support** — `manifest.json` + `service-worker.js`, do last once all tools are stable
+1. **PDF Form Filler** — pdf-lib form fields, high business value
+2. **Search Bar** on Homepage — filter `TOOLS` array by name in real time
+3. **Tool Favourites** — `localStorage` list of pinned tool hrefs
+4. **PWA Support** — `manifest.json` + `service-worker.js`, do last once all tools are stable
 
 ---
 
