@@ -91,12 +91,12 @@
 | 🟡 | **PWA Support** | Install NexPDF on desktop/phone, offline use | 🔥 High |
 | ✅ | **Recent Tools** | Last 3 used tools on homepage, removable | 🔥 High |
 | 🟡 | **Batch Processing** | Process multiple files at once | 🟡 Medium |
-| 🟡 | **Drag-to-Reorder Tools** | Let users pin/reorder homepage tool cards | 🟡 Medium |
+| ✅ | **Drag-to-Reorder Tools** | Let users pin/reorder homepage tool cards | ✅ Yes (HTML5 DnD + `localStorage`) |
 | ✅ | **Tool Favourites** | Star/pin tools to the top of the homepage | ✅ Yes (`localStorage`) |
 | 🟡 | **Processing History** | Show list of files processed in the session | 🟢 Low |
 | 🟡 | **Keyboard Shortcuts** | Global shortcut panel (e.g. `M` for Merge) | 🟢 Low |
 | 🟡 | **Share Link** | Generate a shareable link to a specific tool | 🟢 Low |
-| 🟡 | **Dark/Light Quick Toggle** | Floating pill theme switcher | 🟢 Low |
+| ✅ | **Dark/Light Quick Toggle** | Floating pill theme switcher | ✅ Yes |
 
 ---
 

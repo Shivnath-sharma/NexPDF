@@ -52,17 +52,27 @@ export function Navbar() {
 
           <button
             onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
-            className="inline-flex items-center justify-center rounded-md p-2 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+            className="flex items-center justify-center gap-2 rounded-full bg-muted/50 border border-border/50 px-3 py-1.5 hover:bg-muted transition-colors group"
             aria-label="Toggle dark mode"
           >
             {mounted ? (
-              resolvedTheme === "dark" ? (
-                <Sun className="h-5 w-5" />
-              ) : (
-                <Moon className="h-5 w-5" />
-              )
+              <>
+                <div className="relative flex h-5 w-10 items-center rounded-full bg-background border border-border/50 shadow-inner">
+                  <div
+                    className={`absolute left-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-sm transition-transform duration-300 ${
+                      resolvedTheme === "dark" ? "translate-x-5" : "translate-x-0"
+                    }`}
+                  >
+                    {resolvedTheme === "dark" ? (
+                      <Moon className="h-2.5 w-2.5" />
+                    ) : (
+                      <Sun className="h-2.5 w-2.5" />
+                    )}
+                  </div>
+                </div>
+              </>
             ) : (
-              <div className="h-5 w-5" />
+              <div className="h-5 w-10 opacity-0" />
             )}
           </button>
         </div>
