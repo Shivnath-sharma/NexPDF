@@ -92,7 +92,6 @@
 | ✅ | **Recent Tools** | Last 3 used tools on homepage, removable | 🔥 High |
 | 🟡 | **Batch Processing** | Process multiple files at once | 🟡 Medium |
 | 🟡 | **Drag-to-Reorder Tools** | Let users pin/reorder homepage tool cards | 🟡 Medium |
-| 🟡 | **Search Bar** | Search tools by name from the homepage | 🟡 Medium |
 | 🟡 | **Tool Favourites** | Star/pin tools to the top of the homepage | 🟡 Medium |
 | 🟡 | **Processing History** | Show list of files processed in the session | 🟢 Low |
 | 🟡 | **Keyboard Shortcuts** | Global shortcut panel (e.g. `M` for Merge) | 🟢 Low |
@@ -116,9 +115,8 @@
 ## 📝 Recommended Build Order (Next Steps)
 
 1. **PDF Form Filler** — pdf-lib form fields, high business value
-2. **Search Bar** on Homepage — filter `TOOLS` array by name in real time
-3. **Tool Favourites** — `localStorage` list of pinned tool hrefs
-4. **PWA Support** — `manifest.json` + `service-worker.js`, do last once all tools are stable
+2. **Tool Favourites** — `localStorage` list of pinned tool hrefs
+3. **PWA Support** — `manifest.json` + `service-worker.js`, do last once all tools are stable
 
 ---
 

@@ -7,7 +7,7 @@
 > - Key implementation notes
 > - Gotchas to watch out for
 
-> **Priority Order:** Form Filler → Search Bar → Tool Favourites → PWA (last, once everything is stable)
+> **Priority Order:** Form Filler → Tool Favourites → PWA (last, once everything is stable)
 
 ---
 
@@ -44,49 +44,11 @@ form.getCheckBox('agree_terms').check();
 
 > **Note:** Some PDFs are "locked" against editing. Wrap the entire operation in `try/catch`.
 
----
 
-## 🔍 Priority 2 — Search Bar on Homepage
-
-### What it is
-Real-time search that filters the tools grid as you type.
-
-### How to build it
-
-**Files:** Extract the grid into `frontend/src/components/ToolsGrid.tsx` (Client Component).
-
-```tsx
-'use client';
-import { useState } from 'react';
-import { TOOLS } from '@/config/tools';
-
-export function ToolsGrid() {
-  const [query, setQuery] = useState('');
-  const filtered = TOOLS.filter(t =>
-    t.name.toLowerCase().includes(query.toLowerCase()) ||
-    t.description.toLowerCase().includes(query.toLowerCase())
-  );
-
-  return (
-    <>
-      <input
-        value={query}
-        onChange={e => setQuery(e.target.value)}
-        placeholder="Search tools..."
-      />
-      <div className="grid ...">
-        {filtered.map(tool => <ToolCard key={tool.href} tool={tool} />)}
-      </div>
-    </>
-  );
-}
-```
-
-> **Note:** Keep `page.tsx` as a Server Component for SEO. Only the `ToolsGrid` client component needs state.
 
 ---
 
-## ⭐ Priority 3 — Tool Favourites
+## ⭐ Priority 2 — Tool Favourites
 
 ### What it is
 A star button on each tool card. Starred tools appear in a "My Favourites" section above the main grid.
@@ -113,7 +75,7 @@ const toggleFavourite = (href: string) => {
 
 ---
 
-## ✅ Priority 4 — PWA Support (Make App Installable)
+## ✅ Priority 3 — PWA Support (Make App Installable)
 
 ### What it is
 Lets users install NexPDF on their phone or desktop like a native app. Works offline for the UI (tools still need the browser to run).
