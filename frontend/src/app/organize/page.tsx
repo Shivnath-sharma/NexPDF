@@ -2,10 +2,11 @@
 
 import { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { Upload, FileText, CheckCircle, XCircle, Loader, ArrowLeft, Layers, RotateCw, Trash2, GripHorizontal, ZoomIn, X, Hash, Droplet, Settings2, Palette, Image as ImageIcon } from 'lucide-react';
+import { Upload, FileText, CheckCircle, XCircle, Loader, ArrowLeft, Layers, RotateCw, Trash2, GripHorizontal, ZoomIn, X, Hash, Droplet, Settings2, Palette, Image as ImageIcon, AlignCenter, Scissors } from 'lucide-react';
 import Link from 'next/link';
 import { PDFDocument, degrees, rgb, StandardFonts } from 'pdf-lib';
 import { toast } from 'sonner';
+import { addHistoryItem } from '@/utils/history';
 
 interface PageData {
   id: string;
@@ -13,6 +14,7 @@ interface PageData {
   thumbnailUrl: string;
   rotation: number;
   deleted: boolean;
+  isBlank?: boolean;
 }
 
 interface StudioOptions {
@@ -26,6 +28,15 @@ interface StudioOptions {
   watermarkOpacity: number;
   watermarkScale: number;
   grayscale: boolean;
+  addHeaderFooter: boolean;
+  headerText: string;
+  footerText: string;
+  headerFooterFontSize: number;
+  cropMargins: boolean;
+  cropTop: number;
+  cropBottom: number;
+  cropLeft: number;
+  cropRight: number;
 }
 
 export default function OrganizePDF() {
@@ -49,6 +60,15 @@ export default function OrganizePDF() {
     watermarkOpacity: 0.25,
     watermarkScale: 1,
     grayscale: false,
+    addHeaderFooter: false,
+    headerText: '',
+    footerText: '',
+    headerFooterFontSize: 10,
+    cropMargins: false,
+    cropTop: 0,
+    cropBottom: 0,
+    cropLeft: 0,
+    cropRight: 0,
   });
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
@@ -142,6 +162,30 @@ export default function OrganizePDF() {
     if (previewPageIndex === index) setPreviewPageIndex(null);
   };
 
+  const addBlankPage = () => {
+    // Generate a simple white square as data URL for thumbnail
+    const canvas = document.createElement('canvas');
+    canvas.width = 400;
+    canvas.height = 565; // A4 aspect ratio
+    const ctx = canvas.getContext('2d');
+    if (ctx) {
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+    
+    setPages([
+      ...pages,
+      {
+        id: `blank-${Date.now()}`,
+        originalIndex: -1,
+        thumbnailUrl: canvas.toDataURL('image/jpeg'),
+        rotation: 0,
+        deleted: false,
+        isBlank: true,
+      }
+    ]);
+  };
+
   const handleSave = async () => {
     if (!file) return;
     setProcessing(true);
@@ -164,6 +208,11 @@ export default function OrganizePDF() {
         const pdf = await pdfjsLib.getDocument(originalBytes).promise;
         
         for (const pageData of activePages) {
+          if (pageData.isBlank) {
+            newPdf.addPage([595.28, 841.89]);
+            continue;
+          }
+
           const pdfPage = await pdf.getPage(pageData.originalIndex);
           const viewport = pdfPage.getViewport({ scale: 2.0 }); // 2.0 scale for high quality
           
@@ -206,16 +255,21 @@ export default function OrganizePDF() {
           }
         }
       } else {
-        const indicesToCopy = activePages.map(p => p.originalIndex - 1);
-        const copiedPages = await newPdf.copyPages(sourcePdf, indicesToCopy);
+        const realIndices = activePages.filter(p => !p.isBlank).map(p => p.originalIndex - 1);
+        const copiedPages = realIndices.length > 0 ? await newPdf.copyPages(sourcePdf, realIndices) : [];
 
-        activePages.forEach((pageData, index) => {
-          const copiedPage = copiedPages[index];
-          if (pageData.rotation !== 0) {
-            const currentRotation = copiedPage.getRotation().angle;
-            copiedPage.setRotation(degrees(currentRotation + pageData.rotation));
+        let copiedIdx = 0;
+        activePages.forEach((pageData) => {
+          if (pageData.isBlank) {
+            newPdf.addPage([595.28, 841.89]);
+          } else {
+            const copiedPage = copiedPages[copiedIdx++];
+            if (pageData.rotation !== 0) {
+              const currentRotation = copiedPage.getRotation().angle;
+              copiedPage.setRotation(degrees(currentRotation + pageData.rotation));
+            }
+            newPdf.addPage(copiedPage);
           }
-          newPdf.addPage(copiedPage);
         });
       }
 
@@ -239,6 +293,37 @@ export default function OrganizePDF() {
           else if (options.pageNumberPosition === 'top-right') { x = width - margin - textWidth; y = height - margin - fontSize; }
 
           page.drawText(text, { x, y, size: fontSize, font, color: rgb(0, 0, 0) });
+        });
+      }
+
+      // --- Add Headers & Footers ---
+      if (options.addHeaderFooter && (options.headerText.trim() || options.footerText.trim())) {
+        const font = await newPdf.embedFont(StandardFonts.Helvetica);
+        const margin = 20;
+        const finalPages = newPdf.getPages();
+        finalPages.forEach((page) => {
+          const { width, height } = page.getSize();
+          const fontSize = options.headerFooterFontSize;
+          if (options.headerText.trim()) {
+            const textWidth = font.widthOfTextAtSize(options.headerText, fontSize);
+            page.drawText(options.headerText, {
+              x: width / 2 - textWidth / 2,
+              y: height - margin - fontSize,
+              size: fontSize,
+              font,
+              color: rgb(0.2, 0.2, 0.2),
+            });
+          }
+          if (options.footerText.trim()) {
+            const textWidth = font.widthOfTextAtSize(options.footerText, fontSize);
+            page.drawText(options.footerText, {
+              x: width / 2 - textWidth / 2,
+              y: margin,
+              size: fontSize,
+              font,
+              color: rgb(0.2, 0.2, 0.2),
+            });
+          }
         });
       }
 
@@ -295,10 +380,24 @@ export default function OrganizePDF() {
         }
       }
 
+      // --- Crop Margins ---
+      if (options.cropMargins && (options.cropTop || options.cropBottom || options.cropLeft || options.cropRight)) {
+        newPdf.getPages().forEach((page) => {
+          const { width, height } = page.getSize();
+          const x = options.cropLeft;
+          const y = options.cropBottom;
+          const w = Math.max(1, width - options.cropLeft - options.cropRight);
+          const h = Math.max(1, height - options.cropTop - options.cropBottom);
+          page.setMediaBox(x, y, w, h);
+          page.setCropBox(x, y, w, h);
+        });
+      }
+
       const pdfBytes = await newPdf.save();
       const blob = new Blob([pdfBytes as any], { type: 'application/pdf' });
       setDownloadUrl(URL.createObjectURL(blob));
       toast.success('PDF saved successfully!');
+      addHistoryItem('PDF Editor Studio', file.name);
     } catch (err: any) {
       console.error(err);
       setError(err.message || 'Error processing the PDF.');
@@ -417,9 +516,14 @@ export default function OrganizePDF() {
                     <p className="text-xs text-muted-foreground">{activePages.length} pages • {(file.size / 1024 / 1024).toFixed(2)} MB</p>
                   </div>
                 </div>
-                <button onClick={removeFile} className="text-muted-foreground hover:text-destructive transition-colors p-2 rounded-full hover:bg-destructive/10">
-                  <XCircle className="h-5 w-5" />
-                </button>
+                <div className="flex items-center gap-2">
+                  <button onClick={addBlankPage} className="text-sm font-medium border border-border bg-background px-3 py-1.5 rounded-lg hover:bg-muted transition-colors shadow-sm">
+                    + Blank Page
+                  </button>
+                  <button onClick={removeFile} className="text-muted-foreground hover:text-destructive transition-colors p-2 rounded-full hover:bg-destructive/10">
+                    <XCircle className="h-5 w-5" />
+                  </button>
+                </div>
               </div>
 
               {/* Grid */}
@@ -605,8 +709,60 @@ export default function OrganizePDF() {
                   )}
                 </div>
 
+                {/* Headers & Footers Toggle */}
+                <div className="space-y-3 pb-4 border-b border-border">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <AlignCenter className="h-4 w-4 text-teal-500" />
+                      <span className="text-sm font-semibold">Header &amp; Footer</span>
+                    </div>
+                    <button
+                      onClick={() => setOptions(o => ({ ...o, addHeaderFooter: !o.addHeaderFooter }))}
+                      className={`relative w-10 h-5 rounded-full transition-colors ${options.addHeaderFooter ? 'bg-primary' : 'bg-muted'}`}
+                    >
+                      <span className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform ${options.addHeaderFooter ? 'translate-x-5' : 'translate-x-0'}`} />
+                    </button>
+                  </div>
+                  {options.addHeaderFooter && (
+                    <div className="space-y-2 pl-1">
+                      <div className="flex flex-col gap-1">
+                        <label className="text-xs text-muted-foreground">Header text (top center)</label>
+                        <input
+                          type="text"
+                          value={options.headerText}
+                          onChange={(e) => setOptions(o => ({ ...o, headerText: e.target.value }))}
+                          placeholder="e.g. My Company"
+                          maxLength={80}
+                          className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                        />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <label className="text-xs text-muted-foreground">Footer text (bottom center)</label>
+                        <input
+                          type="text"
+                          value={options.footerText}
+                          onChange={(e) => setOptions(o => ({ ...o, footerText: e.target.value }))}
+                          placeholder="e.g. Page | Confidential"
+                          maxLength={80}
+                          className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                        />
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <label className="text-xs text-muted-foreground whitespace-nowrap">Font size:</label>
+                        <input
+                          type="number"
+                          min="6" max="24"
+                          value={options.headerFooterFontSize}
+                          onChange={(e) => setOptions(o => ({ ...o, headerFooterFontSize: parseInt(e.target.value) || 10 }))}
+                          className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+
                 {/* Grayscale Toggle */}
-                <div className="space-y-3">
+                <div className="space-y-3 pb-4 border-b border-border">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Palette className="h-4 w-4 text-slate-500" />
@@ -623,6 +779,41 @@ export default function OrganizePDF() {
                     <p className="text-xs text-muted-foreground bg-muted/50 p-2 rounded-md border border-border">
                       ⚠️ Converts pages to images to apply filter. Text will no longer be selectable and file size may increase.
                     </p>
+                  )}
+                </div>
+
+                {/* Crop Margins Toggle */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Scissors className="h-4 w-4 text-orange-500" />
+                      <span className="text-sm font-semibold">Crop Margins</span>
+                    </div>
+                    <button
+                      onClick={() => setOptions(o => ({ ...o, cropMargins: !o.cropMargins }))}
+                      className={`relative w-10 h-5 rounded-full transition-colors ${options.cropMargins ? 'bg-primary' : 'bg-muted'}`}
+                    >
+                      <span className={`absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform ${options.cropMargins ? 'translate-x-5' : 'translate-x-0'}`} />
+                    </button>
+                  </div>
+                  {options.cropMargins && (
+                    <div className="space-y-2 pl-1">
+                      <p className="text-xs text-muted-foreground">Enter crop amount in points (1pt ≈ 0.35mm) for each edge.</p>
+                      <div className="grid grid-cols-2 gap-2">
+                        {(['top', 'bottom', 'left', 'right'] as const).map((side) => (
+                          <div key={side} className="flex flex-col gap-1">
+                            <label className="text-xs text-muted-foreground capitalize">{side}</label>
+                            <input
+                              type="number"
+                              min="0" max="300"
+                              value={options[`crop${side.charAt(0).toUpperCase() + side.slice(1)}` as 'cropTop' | 'cropBottom' | 'cropLeft' | 'cropRight']}
+                              onChange={(e) => setOptions(o => ({ ...o, [`crop${side.charAt(0).toUpperCase() + side.slice(1)}`]: Math.max(0, parseInt(e.target.value) || 0) }))}
+                              className="w-full bg-background border border-border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   )}
                 </div>
               </div>

@@ -6,6 +6,8 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { Toaster } from "sonner";
 import { RecentToolsTracker } from "@/components/RecentToolsTracker";
+import { KeyboardShortcuts } from "@/components/KeyboardShortcuts";
+import { ProcessingHistorySidebar } from "@/components/ProcessingHistorySidebar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -41,6 +43,8 @@ export default function RootLayout({
             {children}
           </main>
           <Footer />
+          <KeyboardShortcuts />
+          <ProcessingHistorySidebar />
           <Toaster richColors position="bottom-right" />
         </ThemeProvider>
       </body>

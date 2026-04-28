@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useTheme } from "next-themes";
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, History } from "lucide-react";
 import { useEffect, useState } from "react";
 import logoImg from "../../public/logo2.png";
 
@@ -49,6 +49,15 @@ export function Navbar() {
             <GithubIcon className="h-5 w-5" />
             <span className="hidden sm:inline-block">Shivnath</span>
           </Link>
+
+          <button
+            onClick={() => window.dispatchEvent(new Event('nexpdf_history_open'))}
+            className="flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+            aria-label="Activity Log"
+          >
+            <History className="h-5 w-5" />
+            <span className="hidden sm:inline-block">History</span>
+          </button>
 
           <button
             onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}

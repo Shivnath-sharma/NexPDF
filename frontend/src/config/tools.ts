@@ -1,6 +1,6 @@
 import { 
   FileText, Scissors, Archive, Image as ImageIcon,
-  Droplet, Layers, FileSearch, Images, ShieldAlert, Info, RotateCw, CopyMinus, PenTool, ClipboardList
+  Droplet, Layers, FileSearch, Images, ShieldAlert, Info, RotateCw, CopyMinus, PenTool, ClipboardList, FileLock2, FileCode, Link2
 } from 'lucide-react';
 
 export const TOOLS = [
@@ -11,6 +11,30 @@ export const TOOLS = [
     href: '/sign',
     color: 'from-blue-600 to-indigo-600',
     shadow: 'shadow-blue-500/20'
+  },
+  {
+    name: 'Flatten PDF',
+    description: 'Lock fillable form fields permanently so they can no longer be edited.',
+    icon: FileLock2,
+    href: '/flatten',
+    color: 'from-slate-500 to-gray-700',
+    shadow: 'shadow-slate-500/20'
+  },
+  {
+    name: 'Markdown to PDF',
+    description: 'Convert Markdown text into a beautifully styled, downloadable PDF document.',
+    icon: FileCode,
+    href: '/markdown-to-pdf',
+    color: 'from-zinc-700 to-stone-900',
+    shadow: 'shadow-zinc-700/20'
+  },
+  {
+    name: 'PDF Link Extractor',
+    description: 'Scan any PDF and extract all embedded hyperlinks into a clean, copyable list.',
+    icon: Link2,
+    href: '/link-extractor',
+    color: 'from-cyan-500 to-sky-600',
+    shadow: 'shadow-cyan-500/20'
   },
   {
     name: 'PDF Form Filler',

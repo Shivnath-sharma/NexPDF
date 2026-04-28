@@ -43,7 +43,7 @@
 |--------|------|-------------|--------------|-------|
 | 🟡 | **Protect PDF** | Add a password to lock a PDF | ❌ Needs `qpdf` on backend | Defer — needs backend setup |
 | 🟡 | **Unlock PDF** | Remove password from a PDF | ❌ Needs `qpdf` on backend | Defer — needs backend setup |
-| 🟡 | **Flatten PDF** | Flatten form fields so they cannot be edited | ✅ Yes (pdf-lib) | Useful for legal/forms |
+| ✅ | **Flatten PDF** | Flatten form fields so they cannot be edited | ✅ Yes (pdf-lib) | Useful for legal/forms |
 
 ### 📄 Conversion Tools
 | Status | Tool | Description | Client-Side? | Notes |
@@ -53,16 +53,16 @@
 | 🟡 | **HTML → PDF** | Convert a webpage/URL to PDF | ❌ Needs Puppeteer | Defer |
 | 🟡 | **Excel → PDF** | Convert .xlsx files to PDF | ❌ Needs backend | Defer |
 | 🟡 | **PDF → PPTX** | Export PDF slides to PowerPoint | ❌ Complex | Hard — skip for now |
-| 🟡 | **Markdown → PDF** | Render a .md file as a beautiful PDF | ✅ Yes (marked + html2canvas or pdf-lib) | Niche but cool |
+| ✅ | **Markdown → PDF** | Render a .md file as a beautiful PDF | ✅ Yes (marked + html2pdf.js) | Niche but cool |
 
 ### ✏️ Studio Sidebar Additions *(add as toggles in PDF Editor Studio, not new pages)*
 | Status | Feature | Description | Notes |
 |--------|---------|-------------|-------|
 | ✅ | **Image Watermark** | Stamp a logo/PNG over every page | ✅ Yes (pdf-lib) | Done! |
 | ✅ | **Grayscale** | Convert all pages to black & white | ✅ Yes (Canvas filter) | Done! |
-| 🟡 | **Crop Margins** | Trim page edges (resize mediabox) | Modify page crop/media box via pdf-lib |
-| 🟡 | **Add Blank Pages** | Insert empty pages at any position | One-liner with `pdfDoc.addPage()` in pdf-lib |
-| 🟡 | **Headers & Footers** | Add custom text header/footer to every page | pdf-lib `drawText` at fixed y-positions |
+| ✅ | **Crop Margins** | Trim page edges (resize mediabox) | ✅ Yes (pdf-lib setMediaBox/setCropBox) |
+| ✅ | **Add Blank Pages** | Insert empty pages at any position | ✅ Yes (pdf-lib `addPage`) |
+| ✅ | **Headers & Footers** | Add custom text header/footer to every page | ✅ Yes (pdf-lib `drawText`) |
 
 ### 📊 Info & Analysis
 | Status | Tool | Description | Client-Side? | Notes |
@@ -70,7 +70,7 @@
 | ✅ | **PDF Metadata Viewer** | Show author, title, creation date, keywords | ✅ Yes (pdf-lib) | Done! |
 | 🟡 | **PDF Page Counter** | Show quick count of pages in a file — no download | ✅ Yes (pdf.js) | Micro-tool, great for homepage widget |
 | 🟡 | **Compare PDFs** | Diff two PDFs side-by-side | Partial | Very complex — skip for now |
-| 🟡 | **PDF Link Extractor** | Pull all hyperlinks from a PDF | ✅ Yes (pdf.js annotation layer) | Niche but interesting |
+| ✅ | **PDF Link Extractor** | Pull all hyperlinks from a PDF | ✅ Yes (pdf.js annotation layer) | Niche but interesting |
 
 ### 🎨 New Standalone Tools (Fresh Ideas)
 | Status | Tool | Description | Client-Side? | Notes |
@@ -93,8 +93,8 @@
 | 🟡 | **Batch Processing** | Process multiple files at once | 🟡 Medium |
 | ✅ | **Drag-to-Reorder Tools** | Let users pin/reorder homepage tool cards | ✅ Yes (HTML5 DnD + `localStorage`) |
 | ✅ | **Tool Favourites** | Star/pin tools to the top of the homepage | ✅ Yes (`localStorage`) |
-| 🟡 | **Processing History** | Show list of files processed in the session | 🟢 Low |
-| 🟡 | **Keyboard Shortcuts** | Global shortcut panel (e.g. `M` for Merge) | 🟢 Low |
+| ✅ | **Processing History** | Show list of files processed in the session | ✅ Yes (Sidebar Log) |
+| ✅ | **Keyboard Shortcuts** | Global shortcut panel (e.g. `M` for Merge) | ✅ Yes (Press `?`) |
 | 🟡 | **Share Link** | Generate a shareable link to a specific tool | 🟢 Low |
 | ✅ | **Dark/Light Quick Toggle** | Floating pill theme switcher | ✅ Yes |
 
