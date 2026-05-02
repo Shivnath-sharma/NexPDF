@@ -32,7 +32,7 @@ function ToolCard({
       onDragStart={(e) => onDragStart?.(e, tool.href)}
       onDragOver={onDragOver}
       onDrop={(e) => onDrop?.(e, tool.href)}
-      className={`group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-card p-6 border border-border transition-all duration-300 w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] max-w-[420px] hover:shadow-2xl hover:-translate-y-2 hover:border-primary/50 dark:hover:shadow-[0_8px_30px_rgba(255,255,255,0.08)] ${draggable ? 'cursor-grab active:cursor-grabbing' : ''}`}
+      className={`group relative flex flex-col justify-between overflow-hidden rounded-2xl bg-card p-5 sm:p-6 border border-border transition-all duration-300 w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] max-w-[420px] hover:shadow-2xl hover:-translate-y-2 hover:border-primary/50 dark:hover:shadow-[0_8px_30px_rgba(255,255,255,0.08)] ${draggable ? 'cursor-grab active:cursor-grabbing' : ''}`}
     >
       <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${tool.color} rounded-full blur-3xl opacity-0 group-hover:opacity-20 transition-opacity duration-500 -mr-10 -mt-10`}></div>
       
