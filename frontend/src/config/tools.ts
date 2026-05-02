@@ -1,6 +1,6 @@
 import { 
   FileText, Scissors, Archive, Image as ImageIcon,
-  Droplet, Layers, FileSearch, Images, ShieldAlert, Info, RotateCw, CopyMinus, PenTool, ClipboardList, FileLock2, FileCode, Link2
+  Droplet, Layers, FileSearch, Images, ShieldAlert, Info, RotateCw, CopyMinus, PenTool, ClipboardList, FileLock2, FileCode, Link2, PackageOpen, Highlighter
 } from 'lucide-react';
 
 export const TOOLS = [
@@ -11,6 +11,22 @@ export const TOOLS = [
     href: '/sign',
     color: 'from-blue-600 to-indigo-600',
     shadow: 'shadow-blue-500/20'
+  },
+  {
+    name: 'Batch Compress',
+    description: 'Upload multiple PDFs at once, compress them all, and download as a single ZIP file.',
+    icon: PackageOpen,
+    href: '/batch-compress',
+    color: 'from-violet-500 to-purple-700',
+    shadow: 'shadow-violet-500/20'
+  },
+  {
+    name: 'PDF Annotator',
+    description: 'Highlight text, draw freehand, and add notes directly on your PDF pages.',
+    icon: Highlighter,
+    href: '/annotator',
+    color: 'from-amber-400 to-orange-500',
+    shadow: 'shadow-amber-400/20'
   },
   {
     name: 'Flatten PDF',

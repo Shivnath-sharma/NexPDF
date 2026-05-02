@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "html2pdf.js": "^0.14.0",
+    "jszip": "^3.10.1",
     "lucide-react": "^1.8.0",
     "marked": "^18.0.2",
     "next": "16.2.4",
